@@ -184,6 +184,37 @@ SELECT *,TIMESTAMPDIFF(YEAR, bday, CURDATE())  as Bday_IN_years, TIMESTAMPDIFF(M
 WHERE TIMESTAMPDIFF(YEAR, bday, CURDATE()) BETWEEN 0 AND 115;
 ```
 12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на прошлую принадлежность к старым таблицам.
+
+```sql
+SELECT h.horse_name, h.horse_comand, h.horse_birthday, pa.pack_type_name, yo.Bday_IN_years 
+FROM horse h
+LEFT JOIN pack_animals pa ON pa.Id = h.home_type_id
+LEFT JOIN young_animal yo ON yo.Name = h.horse_name
+
+UNION
+SELECT d.donkey_name, d.donkey_comand, d.donkey_birthday, pa.pack_type_name, yo.Bday_IN_years 
+FROM donkey d
+LEFT JOIN pack_animals pa ON pa.Id = d.home_type_id
+LEFT JOIN young_animal yo ON yo.Name = d.donkey_name
+
+UNION
+SELECT c.cat_name, c.cat_comand, c.cat_birthday, ho.home_type_name, yo.Bday_IN_years 
+FROM cat c
+LEFT JOIN home_animals ho ON ho.Id = c.home_type_id
+LEFT JOIN young_animal yo ON yo.Name = c.cat_name
+
+UNION
+SELECT d.dog_name, d.dog_comand, d.dog_birthday, ho.home_type_name, yo.Bday_IN_years 
+FROM dog d
+LEFT JOIN home_animals ho ON ho.Id = d.home_type_id
+LEFT JOIN young_animal yo ON yo.Name = d.dog_name
+
+UNION
+SELECT ha.hamster_name, ha.hamster_comand, ha.hamster_birthday, ho.home_type_name, yo.Bday_IN_years 
+FROM hamster ha
+LEFT JOIN home_animals ho ON ho.Id = ha.home_type_id
+LEFT JOIN young_animal yo ON yo.Name = ha.hamster_name
+```
 13. Создать класс с Инкапсуляцией методов и наследованием по диаграмме.
 14. Написать программу, имитирующую работу реестра домашних животных.
 В программе должен быть реализован следующий функционал:<br>

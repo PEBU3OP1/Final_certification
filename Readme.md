@@ -72,15 +72,118 @@ VALUES ('Hamster', 2),
 
 
 ```
-9. Заполнить низкоуровневые таблицы именами(животных), командами
-которые они выполняют и датами рождения
-10. Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой
-питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
+## 9. Заполнить низкоуровневые таблицы именами(животных), командами, которые они выполняют и датами рождения
+### Home_animals
+
+```sql
+CREATE TABLE hamster 
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+hamster_name VARCHAR (30),
+hamster_comand VARCHAR (30),
+hamster_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+INSERT INTO hamster (hamster_name, hamster_comand, hamster_birthday, home_type_id)
+VALUES 
+('Яша','home', '2000-05-12', 1),  
+('Паша','go away', '2011-07-11', 1), 
+('Хомяк_1','', '2010-02-10', 1);
+
+CREATE TABLE cat
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+cat_name VARCHAR (30),
+cat_comand VARCHAR (30),
+cat_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO cat (cat_name, cat_comand, cat_birthday, home_type_id)
+VALUES ('Кися', 'к ноге', '1900-01-01', 2),
+('Пися', 'к барьеру', '1900-02-02', 2),  
+('Дымка', '', "1950-02-02", 2); 
+
+CREATE TABLE dog 
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+dog_name VARCHAR (30),
+dog_comand VARCHAR (30),
+dog_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES home_animals (Id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO dog (dog_name, dog_comand, dog_birthday, home_type_id)
+VALUES ('Дружок', 'гулять', '1950-11-11', 3),
+('Вражок', 'сидеть', "1951-11-11", 3),  
+('Пирожок', 'стоять', "1952-11-11", 3);
+```
+
+Pack_animals
+```sql
+CREATE TABLE camel
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+camel_name VARCHAR (30),
+camel_comand VARCHAR (30),
+camel_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO camel (camel_name, camel_comand, camel_birthday, home_type_id)
+VALUES ('Алексей','ищи оазис', '1918-04-02', 1),
+('Дмитрий Петрович','ищи группу оазис', '1918-03-02', 1),  
+('Гора','уйди от меня', '1918-11-02', 1);
+
+CREATE TABLE horse
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+horse_name VARCHAR (30),
+horse_comand VARCHAR (30),
+horse_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO horse (horse_name, horse_comand, horse_birthday, home_type_id)
+VALUES ('Лошадь','оазис', '1911-04-02', 2),
+('Лошадка','ищи', '1911-03-02', 2),  
+('Лошаденка','уйди', '1911-11-02', 2);
+
+
+CREATE TABLE donkey
+( Id INT AUTO_INCREMENT PRIMARY KEY,
+donkey_name VARCHAR (30),
+donkey_comand VARCHAR (30),
+donkey_birthday DATE,
+home_type_id INT,
+FOREIGN KEY (home_type_id) REFERENCES pack_animals (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+INSERT INTO donkey (donkey_name, donkey_comand, donkey_birthday, home_type_id)
+VALUES ('Осел','', '1909-04-02', 3),
+('Ослище','ищи ослиху', '1909-03-02', 3),  
+('Ослик','приди', '1909-11-02', 3);
+```
+10. Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой питомник на зимовку. Объединить таблицы лошади, и ослы в одну таблицу.
+
+```sql
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM camel;
+
+
+SELECT horse_name as name, horse_comand as command, horse_birthday as bday FROM horse
+UNION SELECT  donkey_name, donkey_comand, donkey_birthday FROM donkey;
+```
 11. Создать новую таблицу “молодые животные” в которую попадут все
-животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью
-до месяца подсчитать возраст животных в новой таблице
-12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на
-прошлую принадлежность к старым таблицам.
+животные старше 1 года, но младше 3 лет и в отдельном столбце с точностью до месяца подсчитать возраст животных в новой таблице
+
+
+```sql
+CREATE TABLE young_animal AS
+SELECT *,TIMESTAMPDIFF(YEAR, bday, CURDATE())  as Bday_IN_years, TIMESTAMPDIFF(MONTH, bday, CURDATE())%12  as Bday_IN_month FROM animal
+WHERE TIMESTAMPDIFF(YEAR, bday, CURDATE()) BETWEEN 0 AND 115;
+```
+12. Объединить все таблицы в одну, при этом сохраняя поля, указывающие на прошлую принадлежность к старым таблицам.
 13. Создать класс с Инкапсуляцией методов и наследованием по диаграмме.
 14. Написать программу, имитирующую работу реестра домашних животных.
 В программе должен быть реализован следующий функционал:<br>

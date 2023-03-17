@@ -62,9 +62,21 @@ public class Farm_db implements Farm_database_intfc {
     }
 
     @Override
-    public String delete() {
-        // TODO Auto-generated method stub
-        return null;
+    public void delete(int Id) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = get_Connection();
+            PreparedStatement stmt = con.prepareStatement("DELETE FROM farm WHERE Id = ?");
+            stmt.setInt(1, Id);
+            stmt.executeUpdate();
+            con.close();
+
+        } catch (Exception e) {
+            System.out.println(e);
+
+        }
+        
+        System.out.printf("Животное под номером %d удалено\n", Id);
     }
 
     @Override
@@ -84,11 +96,11 @@ public class Farm_db implements Farm_database_intfc {
 
             con.close();
 
+            
         } catch (Exception e) {
             System.out.println(e);
         }
         System.out.println("New " + class_name + " was added!");
     }
 
-    
 }

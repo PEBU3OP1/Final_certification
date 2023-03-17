@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import Controller.Controller;
 import Controller.Date_validator;
+import Database.Farm_db;
 import Model.Cat;
 import Model.Creator;
 import Model.Dog;
@@ -87,7 +88,11 @@ public class View {
                     System.out.println("6");
                     break;
                 case "7":
-                    System.out.println("7");
+                    System.out.println("Введите Id удаляемого животного: ");
+                    Integer pet_to_delete = new Scanner(System.in).nextInt();
+                    Farm_db farm_db = new Farm_db();
+                    farm_db.delete(pet_to_delete);
+
                     break;
                 case "8":
                     return;

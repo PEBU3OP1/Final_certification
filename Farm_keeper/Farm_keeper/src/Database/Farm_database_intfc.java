@@ -11,7 +11,7 @@ public interface Farm_database_intfc {
 
     String train();
     void toAdd(String name, String command, Date bday, String class_name, Integer Bday_IN_Years);
-    String delete();
+    void delete(int Id);
 
 
 

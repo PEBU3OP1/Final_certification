@@ -24,6 +24,10 @@ public class Program {
         View menu = new View();
         menu.start();
 
+       //Cat cat = new Cat("fds", "fds", "11-11-2004");
+
+      // System.out.println(cat.getName());
+
     
 
 
